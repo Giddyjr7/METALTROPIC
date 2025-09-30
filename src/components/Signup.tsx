@@ -17,7 +17,7 @@ const Signup = () => {
           />
           <Input
             type="email"
-            placeholder="Email"
+            placeholder="Email Address"
             className="bg-input text-foreground border border-border"
           />
           <Input
@@ -27,7 +27,7 @@ const Signup = () => {
           />
           <Input
             type="password"
-            placeholder="confirm Password"
+            placeholder="Confirm Password"
             className="bg-input text-foreground border border-border"
           />
         </CardContent>

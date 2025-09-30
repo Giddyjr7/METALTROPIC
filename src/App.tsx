@@ -23,6 +23,7 @@ import Deposit from "./pages/dashboard/Deposit";
 import Withdraw from "./pages/dashboard/Withdraw";
 import Transactions from "./pages/dashboard/Transactions";
 import Profile from "./pages/dashboard/Profile";
+import ConfirmDeposit from "./pages/dashboard/ConfirmDeposit";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="withdraw" element={<Withdraw />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="/dashboard/confirm-deposit" element={<ConfirmDeposit />} />
         </Route>
 
         {/* Catch-all (404) */}

@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import {
   LayoutDashboard,
-  Wallet,
   ArrowDownCircle,
   ArrowUpCircle,
   Clock,
   User,
   Menu,
   X,
+  ChevronDown,
 } from "lucide-react";
 
 export default function DashboardLayout() {
@@ -32,10 +32,7 @@ export default function DashboardLayout() {
       >
         <div className="flex items-center justify-between p-4 border-b border-border">
           <h1 className="text-lg font-bold text-primary">MetalTropic</h1>
-          <button
-            className="lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          >
+          <button className="lg:hidden" onClick={() => setSidebarOpen(false)}>
             <X size={20} />
           </button>
         </div>
@@ -58,14 +55,24 @@ export default function DashboardLayout() {
       <div className="flex flex-1 flex-col lg:ml-64">
         {/* Topbar */}
         <header className="flex items-center justify-between border-b border-border bg-card px-4 py-3 lg:px-6">
-          <button
-            className="lg:hidden"
-            onClick={() => setSidebarOpen(true)}
-          >
+          {/* Mobile sidebar toggle */}
+          <button className="lg:hidden" onClick={() => setSidebarOpen(true)}>
             <Menu size={22} />
           </button>
-          <h2 className="text-lg font-semibold">Dashboard</h2>
-          <Wallet className="text-primary" size={22} />
+
+          {/* Page title */}
+          <h2 className="text-lg font-semibold">Welcome Giddy</h2>
+
+          {/* Profile section (dummy) */}
+          <div className="flex items-center gap-3">
+            <img
+              src="https://via.placeholder.com/32"
+              alt="Profile"
+              className="h-8 w-8 rounded-full border border-border"
+            />
+            <span className="text-sm font-medium">Giddyjr7</span>
+            <ChevronDown size={18} className="text-muted-foreground" />
+          </div>
         </header>
 
         {/* Outlet for nested pages */}
