@@ -4,7 +4,8 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-    base: "/MetalTropic/",
+  // ✅ Use root for both dev & prod
+  base: "/",
   server: {
     host: "::",
     port: 8080,
@@ -12,8 +13,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === "development" && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -23,13 +23,13 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
-        entryFileNames: 'index.js',
-        chunkFileNames: 'chunk-[name].js',
+        entryFileNames: "index.js",
+        chunkFileNames: "chunk-[name].js",
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-            return 'index.css';
+          if (assetInfo.name && assetInfo.name.endsWith(".css")) {
+            return "index.css";
           }
-          return 'asset-[name][extname]';
+          return "asset-[name][extname]";
         },
       },
     },
