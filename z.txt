@@ -8,15 +8,19 @@ METALTROPIC JOB
     >src
         >components
             >ui
-            >CTA.tsx
+            CTA.tsx
+            Dashboardlayout.tsx
             FAQ.tsx
             Features.tsx
             Footer.tsx
             Hero.tsx
             HowItWorks.tsx
+            Login.tsx
             Navbar.tsx
             Pricing.tsx
             ScrollToTop.tsx
+            Sidebar.tsx
+            Signup.tsx
             Testimonials.tsx
         >data
             faqData.ts
@@ -29,6 +33,13 @@ METALTROPIC JOB
         >lib
             utils.ts
         >pages
+            >dashboard
+                ConfirmDeposit.tsx
+                Deposit.tsx
+                Overview.tsx
+                Profile.tsx
+                Trasactions.tsx
+                Withdraw.tsx
             index.tsx
             NotFound.tsx
         >utils

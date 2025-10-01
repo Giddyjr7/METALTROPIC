@@ -43,13 +43,13 @@ const App = () => (
         <Route path="/signup" element={<Signup />} />
 
         {/* Dashboard (nested routes) */}
-        <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route path="/dashboard/*" element={<DashboardLayout />}>
           <Route index element={<Overview />} />
           <Route path="deposit" element={<Deposit />} />
           <Route path="withdraw" element={<Withdraw />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="/dashboard/confirm-deposit" element={<ConfirmDeposit />} />
+          <Route path="confirm-deposit" element={<ConfirmDeposit />} />
         </Route>
 
         {/* Catch-all (404) */}
