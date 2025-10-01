@@ -4,16 +4,16 @@ export const faqItems = [
     answer: "MetalTropic employs bank-level security measures including 256-bit encryption, cold storage for 95% of assets, two-factor authentication, and regular security audits. Our platform has never been compromised and we maintain a comprehensive insurance policy to protect user funds."
   },
   {
-    question: "What cryptocurrencies can I trade on MetalTropic?",
-    answer: "MetalTropic supports trading of over 50 cryptocurrencies, including Bitcoin (BTC), Ethereum (ETH), Solana (SOL), Cardano (ADA), Ripple (XRP), and many more. We regularly add new cryptocurrencies based on market trends and user demand."
+    question: "What cryptocurrencies can I invest in on MetalTropic?",
+    answer: "MetalTropic gives you access to a wide range of investment opportunities in over 50 leading cryptocurrencies. You can invest in popular assets like Bitcoin (BTC), Ethereum (ETH), Solana (SOL), Cardano (ADA), and Ripple (XRP). Our platform continually adds new cryptocurrencies based on market performance and investor demand, helping you diversify your portfolio with ease."
   },
   {
-    question: "What are the fees for using MetalTropic?",
-    answer: "Our fee structure is transparent and competitive. Basic accounts pay 0.25% per trade, Pro accounts pay 0.1%, and Enterprise accounts pay no trading fees. There are no hidden fees, and we don't charge for deposits. Withdrawal fees vary by cryptocurrency to cover network costs."
+    question: "What are the fees for for investing with MetalTropic?",
+    answer: "At MetalTropic, we keep our investment fees transparent and competitive. Basic investors pay just 0.25% per transaction, Pro investors enjoy reduced fees of 0.1%, and Enterprise investors can grow their portfolios with zero trading fees. We never charge for deposits, and the only withdrawal fees you’ll encounter are the standard blockchain network costs, with no hidden charges."
   },
   {
     question: "How do I deposit funds into my MetalTropic account?",
-    answer: "You can deposit funds via bank transfer, credit/debit card, or by transferring cryptocurrency from another wallet. Bank transfers typically process within 1-3 business days, while card payments and crypto transfers are nearly instant."
+    answer: "Simply select your preferred cryptocurrency, send it to the secure wallet address we provide, and confirm your transfer. Your account will be updated instantly"
   },
   {
     question: "Is MetalTropic available in my country?",
@@ -21,6 +21,6 @@ export const faqItems = [
   },
   {
     question: "How do I get started with MetalTropic?",
-    answer: "Getting started is simple. Create an account, complete the verification process (which typically takes less than 10 minutes), deposit funds using your preferred method, and you're ready to start trading. Our intuitive interface is designed to make cryptocurrency trading accessible for beginners while offering powerful tools for experienced traders."
+    answer: "Getting started is simple. Create an account, complete the quick verification (usually under 10 minutes), fund your account, and you’re ready to start investing. Our platform is designed to make investing easy for beginners while offering powerful tools for seasoned investors."
   }
 ];

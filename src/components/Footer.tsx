@@ -77,7 +77,6 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
               &copy; {currentYear} MetalTropic. All rights reserved.
-              ~ Distributed By <a href="https://themewagon.com/" target="_blank" className="text-crypto-purple hover:underline">ThemeWagon</a>
             </p>
             <div className="flex space-x-6">
               <a href="#!" className="text-gray-400 hover:text-crypto-purple text-sm transition-colors">Terms of Service</a>
