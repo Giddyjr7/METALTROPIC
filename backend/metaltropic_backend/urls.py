@@ -16,7 +16,7 @@ urlpatterns = [
     path('api/investments/', include('investments.urls')),
     path('api/transactions/', include('transactions.urls')),
     path('api-auth/', include('rest_framework.urls')),
-
+    path('api/wallet/', include('wallets.urls')),
 
     path("", lambda request: JsonResponse({"status": "ok", "message": "Welcome to the MetalTropic API"})),
 ]

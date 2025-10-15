@@ -2,13 +2,13 @@ from django.http import JsonResponse
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
-from .serializers import RegisterSerializer, UserSerializer, ChangePasswordSerializer
+from .serializers import RegisterSerializer, UserSerializer, ChangePasswordSerializer, ResetPasswordRequestSerializer, SetNewPasswordSerializer
 
 from rest_framework.views import APIView
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator 
-from .serializers import ResetPasswordRequestSerializer, SetNewPasswordSerializer
+# from .serializers import ResetPasswordRequestSerializer, SetNewPasswordSerializer
 # from django.core.mail import send_mail
 
 # test endpoint
@@ -80,28 +80,6 @@ class ResetPasswordRequestView(APIView):
         reset_link = f"http://localhost:8000/api/accounts/reset-password-confirm/?uidb64={uidb64}&token={token}"
 
         return Response({"reset_link": reset_link})
-
-# class ResetPasswordRequestView(APIView):
-#     def post(self, request):
-#         email = request.data.get("email")
-#         user = User.objects.filter(email=email).first()
-#         if user:
-#             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-#             token = default_token_generator.make_token(user)
-#             reset_link = f"http://localhost:8000/api/accounts/reset-password-confirm/?uidb64={uidb64}&token={token}"
-
-#             # Send reset link via email
-#             send_mail(
-#                 subject="Password Reset Request",
-#                 message=f"Click the link below to reset your password:\n{reset_link}",
-#                 from_email="noreply@metaltropic.com",
-#                 recipient_list=[user.email],
-#                 fail_silently=False,
-#             )
-
-#             return Response({"detail": "Password reset link sent to your email."}, status=200)
-
-#         return Response({"detail": "User with this email does not exist."}, status=404)
 
 
 class ResetPasswordConfirmView(APIView):

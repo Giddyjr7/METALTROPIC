@@ -2,13 +2,15 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
-from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from decimal import Decimal
 
-User = get_user_model()
 User = settings.AUTH_USER_MODEL
 
+
+# -----------------------------
+# INVESTMENT PLAN MODEL
+# -----------------------------
 class InvestmentPlan(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
@@ -23,6 +25,9 @@ class InvestmentPlan(models.Model):
         return self.name
 
 
+# -----------------------------
+# USER INVESTMENT MODEL
+# -----------------------------
 class UserInvestment(models.Model):
     STATUS_CHOICES = [
         ('active', 'Active'),
@@ -42,7 +47,6 @@ class UserInvestment(models.Model):
         return f"{self.user.username} - {self.plan.name}"
 
     def calculate_expected_profit(self):
-        """Calculates expected profit based on ROI and duration."""
         daily_profit = (self.amount * self.plan.daily_roi) / 100
         total_profit = daily_profit * self.plan.duration_days
         self.expected_profit = total_profit
@@ -50,7 +54,9 @@ class UserInvestment(models.Model):
         return self.expected_profit
 
 
-
+# -----------------------------
+# INVESTMENT MODEL
+# -----------------------------
 class Investment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     plan = models.ForeignKey(InvestmentPlan, on_delete=models.CASCADE)
@@ -63,13 +69,11 @@ class Investment(models.Model):
     ends_at = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        # Auto-set end date
         if not self.ends_at:
             self.ends_at = self.created_at + timedelta(days=self.plan.duration_days)
         super().save(*args, **kwargs)
 
     def calculate_profit(self):
-        """Calculate profit and total returns"""
         daily_rate = self.plan.daily_roi / 100
         days = self.plan.duration_days
 
@@ -86,54 +90,72 @@ class Investment(models.Model):
         self.is_completed = timezone.now() >= self.ends_at
         self.save()
         return profit
-    
 
+
+# -----------------------------
+# DEPOSIT MODEL
+# -----------------------------
 class Deposit(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(10)])
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="deposits")
+    amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(10)])
     proof = models.ImageField(upload_to='deposits/')
-    is_confirmed = models.BooleanField(default=False)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def approve(self):
+        if self.status != 'approved':
+            self.status = 'approved'
+            self.save(update_fields=["status", "updated_at"])
+            # ✅ Update main wallet automatically (from wallets app)
+            from wallets.models import Wallet
+            wallet, _ = Wallet.objects.get_or_create(user=self.user)
+            wallet.credit(self.amount)
+
+    def reject(self):
+        self.status = 'rejected'
+        self.save(update_fields=["status", "updated_at"])
 
     def __str__(self):
-        return f"Deposit {self.id} by {self.user.username}"
+        return f"Deposit {self.id} - {self.user.username} - ₦{self.amount} ({self.status})"
 
 
+# -----------------------------
+# WITHDRAWAL MODEL
+# -----------------------------
 class Withdrawal(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('approved', 'Approved'),
-        ('declined', 'Declined'),
+        ('rejected', 'Rejected'),
     ]
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="withdrawals")
+    amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(10)])
     wallet_address = models.CharField(max_length=255)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def approve(self):
+        """Approve withdrawal only if user has enough balance."""
+        from wallets.models import Wallet
+        wallet, _ = Wallet.objects.get_or_create(user=self.user)
+        if wallet.debit(self.amount):
+            self.status = 'approved'
+        else:
+            self.status = 'rejected'
+        self.save(update_fields=["status", "updated_at"])
+
+    def reject(self):
+        self.status = 'rejected'
+        self.save(update_fields=["status", "updated_at"])
 
     def __str__(self):
         return f"Withdrawal {self.id} - {self.user.username} ({self.status})"
-    
-
-
-class UserWallet(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="wallet")
-    balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    last_updated = models.DateTimeField(auto_now=True)
-
-    def credit(self, amount):
-        """Add funds to the wallet."""
-        self.balance += Decimal(amount)
-        self.save()
-
-    def debit(self, amount):
-        """Subtract funds from the wallet (only if sufficient balance)."""
-        if self.balance >= Decimal(amount):
-            self.balance -= Decimal(amount)
-            self.save()
-            return True
-        return False
-
-    def __str__(self):
-        return f"{self.user.username}'s Wallet - Balance: {self.balance}"

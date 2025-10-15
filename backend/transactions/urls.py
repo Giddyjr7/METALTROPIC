@@ -1,7 +1,6 @@
-# transactions/urls.py
 from django.urls import path
-from . import views
+from .views import TransactionHistoryListView
 
 urlpatterns = [
-    path('', views.index, name='transactions-index'),
+    path('', TransactionHistoryListView.as_view(), name='transaction-history'),
 ]
